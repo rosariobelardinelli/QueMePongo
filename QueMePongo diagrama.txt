@@ -1,0 +1,113 @@
+@startuml
+
+Enum Categoria {
+    PARTE_SUPERIOR
+    PARTE_INFERIOR
+    CALZADO
+    ACCESORIO
+}
+
+class Material {
+    tipoDeMaterial
+    trama
+}
+
+Enum Trama {
+    LISA,
+    RAYADA,
+    etc
+}
+
+Enum TipoDeMaterial {
+    ALGODON,
+    LANA,
+    etc
+}
+
+Material -> TipoDeMaterial
+Material -> Trama
+Prenda -> Material
+Prenda -> TipoDePrenda
+TipoDePrenda -> Categoria
+
+class TipoDePrenda {
+    Categoria categoria()
+}
+
+class Prenda {
+    Color colorPrimario
+    Color colorSecundario
+
+    Categoria categoria()
+}
+
+Prenda -> Color
+Prenda -> Color
+
+class Color {
+    int nivelRojo
+    int nivelAzul
+    int nivelVerde
+}
+
+Borrador ..> Prenda 
+
+class Borrador {
+   TipoDePrenda tipo
+   Material material
+   Color colorPrimario
+   Color colorSecundario
+   Trama trama
+   especificarTipo(TipoDePrenda)
+   especificarMaterial(Material)
+   especificarColorPrimario(ColorPrimario)
+   especificarColorSecundario(ColorSecundario)
+   especificarTrama(Trama)
+   crearPrenda()
+  
+}
+
+Uniforme -->"*" Prenda
+
+class Uniforme{
+}
+
+abstract Sastre{
+    fabricarUniforme()
+    fabricarParteSuperior()
+    fabricarParteInferior()
+    fabricarCalzado()
+}
+
+class SastreSanJuan{
+}
+
+class SastreJohnson{
+}
+
+Sastre ..> Uniforme
+SastreSanJuan -|> Sastre
+SastreJohnson -|> Sastre
+
+class Atuendo {
+    Prenda prendaSuperior
+    Prenda prendaInferior
+    Prenda calzado
+    Prenda accesorio
+}
+
+Atuendo -->"*" Prenda
+
+class Sugerencia {
+    List<Map<String, Object>> getClima(ciudad)
+    Atuendo getSugerencia(Map<String, Object>);
+}
+
+Sugerencia ..> Atuendo
+
+interface AccuWeatherAPI{
+    List<Map<String, Object>> getWeather(String ciudad)
+}
+
+
+@enduml
