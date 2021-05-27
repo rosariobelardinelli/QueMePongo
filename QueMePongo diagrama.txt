@@ -94,19 +94,59 @@ class Atuendo {
     Prenda prendaInferior
     Prenda calzado
     Prenda accesorio
+    
+    boolean aptoParaTemperaturas(int temperatura)
 }
 
 Atuendo -->"*" Prenda
 
 class Sugerencia {
-    List<Map<String, Object>> getClima(ciudad)
     Atuendo getSugerencia(Map<String, Object>);
 }
 
 Sugerencia ..> Atuendo
+Sugerencia ..> ProveedorDeClima
 
 interface AccuWeatherAPI{
     List<Map<String, Object>> getWeather(String ciudad)
+}
+
+class ProveedorDeClima {
+    AccuWeatherAPI api
+}
+
+ProveedorDeClima --> AccuWeatherAPI
+
+Usuario -->"*" Guardarropa
+Usuario -->"*" Modificacion
+Usuario --> Borrador
+
+class Usuario{
+    rechazarPropuesta(Modificacion)
+    aceptarPropuesta(Modificacion)
+    deshacerModificacion(Modificacion)
+}
+
+Guardarropa -->"*" Prenda
+Guardarropa -->"*" Usuario
+class Guardarropa {
+    agregarPrenda(Prenda)
+    sacarPrenda(Prenda)
+}
+
+Modificacion --> Guardarropa
+Modificacion --> Prenda
+
+interface Modificacion {
+    void hacerModificacion()
+    void deshacerModificacion()
+}
+
+
+class ModificacionAgregarPrenda implements Modificacion {
+}
+
+class ModificacionSacarPrenda implements Modificacion {
 }
 
 

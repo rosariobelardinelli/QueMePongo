@@ -1,0 +1,350 @@
+// ENTREGA 1
+Class Prenda {
+    Color colorPrimario
+    Color colorSecundario
+    TipoDePrenda tipo
+    Material material
+    int temperaturaMaxima
+
+    public Prenda(Color unColor, TipoDePrenda unTipo, Material unMaterial, int unaTemp){
+        colorPrimario = requireNonNull(unColor, "El color es obligatorio")
+        tipo = requireNonNull(unTipo, "El tipo es obligatorio")
+        material = requireNonNull(unMaterial, "El material es obligatorio")
+        temperaturaMaxima = requireNonNull(unaTemperatura, "La temperatura es obligatoria")
+    }
+
+    public boolean aptaParaTemperatura(int unaTemperatura){
+        return unaTemperatura < temperaturaMaxima
+    }
+
+    public Categoria categoria(){
+        return tipo.categoria()
+    }
+
+    public void setColorSecundario(Color unColor){
+        colorSecundario = unColor
+    }
+}
+
+Class Color {
+    int rojo
+    int verde
+    int azul
+
+    public Color(int rojo, int verde, int azul){
+        this.rojo = rojo
+        this.verde = verde
+        this.azul = azul
+    }
+}
+
+Class TipoDePrenda {
+    Categoria categoria
+
+    public TipoDePrenda(Categoria unaCategoria){
+        categoria = unaCategoria
+    }
+
+    public Categoria categoria(){
+        return categoria
+    }
+
+    const CAMISA = new TipoDePrenda(Categoria.PARTE_SUPERIOR)
+    const CHOMBA = new TipoDePrenda(Categoria.PARTE_SUPERIOR)
+    const PANTALON = new TipoDePrenda(Categoria.PARTE_INFERIOR)
+    const ZAPATILLAS = new TipoDePrenda(Categoria.CALZADO)
+    const ZAPATOS = new TipoDePrenda(Categoria.CALZADO)
+}
+
+Class Material {
+    TipoDeMaterial material
+    Trama trama
+
+    public Material(TipoDeMaterial unMaterial, Trama unaTrama){
+        material = unMaterial
+        trama = unaTrama
+    }
+}
+
+Enum Categoria {
+    PARTE_SUPERIOR,
+    PARTE_INFERIOR,
+    CALZADO,
+    ACCESORIO,
+}
+
+Enum Trama {
+    LISA,
+    RAYADA,
+    etc
+}
+
+Enum TipoDeMaterial {
+    ALGODON,
+    LANA,
+    LYCRA,
+    ACETATO,
+    CHAROL,
+    TELA
+    etc
+}
+
+// ENTREGA 2
+
+Class Borrador {
+    Color colorPrimario
+    Color colorSecundario
+    TipoDePrenda tipo
+    TipoDeMaterial material
+    Trama trama = Trama.LISA
+    int temperaturaMax
+
+    public void especificarTipo(TipoDePrenda unTipo){
+        tipo = unTipo
+    }
+
+    public void especificarColorPrimario(Color unColor){
+        colorPrimario = unColor
+    }
+
+    public void especificarColorSecundario(Color unColor){
+        colorSecundario = unColor
+    }
+
+    public void especificarMaterial(TipoDeMaterial unTipoDeMaterial){
+        material = unTipoDeMaterial
+    }
+
+    public void especificarTrama(Trama unaTrama){
+        trama = unaTrama
+    }
+
+    public void especificarTemperatura(int unaTemperatura){
+        temperaturaMax = unaTemperatura
+    }
+
+    public void agregarColorSecundario(Color unColor, Prenda unaPrenda){
+        if(colorSecundario != NULL){
+            unaPrenda.setColorSecundario(unColor)
+        }
+    }
+
+    public Prenda crearPrenda(){
+        Material unMaterial = new Material(material, trama)
+        Prenda unaPrenda = new Prenda(colorPrimario, tipo, material, temperaturaMax)
+        this.agregarColorSecundario(colorSecundario, unaPrenda)
+        return unaPrenda
+    }
+}
+
+Class Uniforme {
+    Prenda superior
+    Prenda inferior
+    Prenda calzado
+
+    public Uniforme(Prenda sup, Prenda inf, Prenda cal){
+        superior = sup
+        inferior = inf
+        calzado = cal
+    }
+}
+
+abstract Class Sastre {
+    public Uniforme fabricarUniforme(){
+        return new Uniforme(this.fabricarParteSuperior(), this.fabricarParteInferior(), this.fabricarCalzado())
+    }
+
+    protected abstract Prenda fabricarParteSuperior()
+    protected abstract Prenda fabricarParteInferior()
+    protected abstract Prenda fabricarCalzado()
+}
+
+Class SastreSanJuan extends Sastre {
+    public Prenda fabricarParteSuperior() {
+        borrador = new Borrador()
+        borrador.especificarTipo(CHOMBA)
+        borrador.especificarColor(new Color(....)) // verde
+        borrador.especificarMaterial(PIQUE)
+        return borrador.crearPrenda()           
+    }
+
+    public Prenda fabricarParteInferior() {
+        borrador = new Borrador()
+        borrador.especificarTipo(PANTALON)
+        borrador.especificarColor(new Color(....)) // gris
+        borrador.especificarMaterial(ACETATO)
+        return borrador.crearPrenda()   
+    }
+
+    public Prenda fabricarCalzado() {
+        borrador = new Borrador()
+        borrador.especificarTipo(ZAPATILLAS)
+        borrador.especificarColor(new Color(....)) // blanco
+        borrador.especificarMaterial(TELA)
+        return borrador.crearPrenda() 
+    }
+}
+
+Class SastreJohnson extends Sastre {
+    public Prenda fabricarParteSuperior() {
+        borrador = new Borrador()
+        borrador.especificarTipo(CAMISA)
+        borrador.especificarColor(new Color(....)) // blanca
+        borrador.especificarMaterial(ALGODON)
+        return borrador.crearPrenda()           
+    }
+
+    public Prenda fabricarParteInferior() {
+        borrador = new Borrador()
+        borrador.especificarTipo(PANTALON)
+        borrador.especificarColor(new Color(....)) // negro
+        borrador.especificarMaterial(ACETATO)
+        return borrador.crearPrenda()   
+    }
+
+    public Prenda fabricarCalzado() {
+        borrador = new Borrador()
+        borrador.especificarTipo(ZAPATOS)
+        borrador.especificarColor(new Color(....)) // negro
+        borrador.especificarMaterial(CHAROL)
+        return borrador.crearPrenda() 
+    }
+} 
+
+// ENTREGA 4
+class ProveedorDeClima {
+    AccuWeatherAPI api
+ 
+    public ProveedorDeClima(AccuWeatherAPI api) {
+    this.api = api;
+    }
+    
+    public int getTemperatura(String unaCiudad){
+        List<Map<String, Object>> condicionesClimaticas = api.getWeather(unaCiudad)
+        int grados = condicionesClimaticas.get("Temperature").get("Value").toDegrees()
+        return grados
+    }
+}
+
+class Atuendo {
+    Prenda prendaSuperior
+    Prenda prendaInferior
+    Prenda calzado
+    Prenda accesorio
+
+    public Atuendo(Prenda sup, Prenda inf, Prenda cal, Prenda acc){
+        prendaSuperior = sup
+        prendaInferior = inf
+        calzado = cal
+        accesorio = acc
+    }
+
+    public boolean aptoParaTemperatura(int temperatura){
+        return prendaSuperior.aptaParaTemperatura(temperatura) && 
+               prendaInferior.aptaParaTemperatura(temperatura) &&
+               calzado.aptaParaTemperatura(temperatura) &&
+               accesorio.aptaParaTemperatura(temperatura)
+    }
+}
+
+class Sugerencia {
+    ProveedorDeClima proveedorDeClima
+    Guardarropa Guardarropa
+
+    public Sugerecia(ProveedorDeClima unProveedor, Guardarropa unGuardarropa){
+        this.proveedorDeClima = unProveedor
+        this.Guardarropa = unGuardarropa
+    }
+
+    public Atuendo getSugerencia(String ciudad){
+        int grados = this.proveedorDeClima.getTemperatura(ciudad)
+        List<Prenda> prendasAptas = Guardarropa.getPrendas().filter(p -> p.aptaParaTemperatura(grados))
+        Prenda sup = prendasAptas.filter(p -> p.categoria() == PARTE_SUPERIOR).first()
+        Prenda inf = prendasAptas.filter(p -> p.categoria() == PARTE_INFERIOR).first()
+        Prenda cal = prendasAptas.filter(p -> p.categoria() == CALZADO).first()
+        Prenda acc = prendasAptas.filter(p -> p.categoria() == ACCESORIO).first()
+        return new Atuendo(sup, inf, cal, acc)
+    }
+}
+
+// ENTREGA 5
+class Guardarropa {
+    List<Prenda> prendas
+    List<Usuario> usuarios
+
+    public void agregarPrenda(Prenda unaPrenda){
+        prendas.add(unaPrenda)
+    }
+
+    public void sacarPrenda(Prenda unaPrenda){
+        prendas.remove(unaPrenda)
+    }
+
+    public List<Prenda> getPrendas() {
+        return prendas
+    }
+
+}
+
+class Usuario {
+    List<Guardarropa> guardarropas
+    List<Prenda> modificacionesAEvaluar
+    List<Prenda> modificacionesAceptadas
+    Borrador borrador
+
+    public List<Modificacion> propuestasDeModificaciones(){
+        return modificacionesAEvaluar
+    }
+
+    public void rechazarPropuesta(Modificacion unaModificacion){
+        modificacionesAEvaluar.remove(unaModificacion)
+    }
+
+    public void aceptarPropuesta(Modificacion unaModificacion){
+        modificacionesAEvaluar.remove(unaModificacion)
+        modificacionesAceptadas.add(unaModificacion)
+        unaModificacion.hacerModificacion()
+    }
+
+    public List<Modificacion> modificacionesAceptadas(){
+        return modificacionesAceptadas
+    }
+
+    public void deshacerModificacion(Modificacion unaModificacion){
+        modificacionesAceptadas.remove(unaModificacion)
+        unaModificacion.deshacerModificacion()
+    }
+}
+
+interface Modificacion {
+    Guardarropa guardarropa
+    Prenda prenda
+
+    public void hacerModificacion()
+    public void deshacerModificacion()
+}
+
+class ModificacionAgregarPrenda implements Modificacion {
+    
+    public void hacerModificacion(){
+        this.guardarropa.agregarPrenda(this.prenda)
+    }
+
+    public void deshacerModificacion(){
+        this.guardarropa.sacarPrenda(this.prenda)
+    }
+
+}
+
+class ModificacionSacarPrenda implements Modificacion {
+    
+    public void hacerModificacion(){
+        this.guardarropa.sacarPrenda(this.prenda)
+    }
+
+    public void deshacerModificacion(){
+        this.guardarropa.agregarPrenda(this.prenda)
+    }
+
+}
+
